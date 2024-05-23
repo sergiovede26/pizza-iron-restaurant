@@ -1,0 +1,79 @@
+- npm init
+- npm install express
+- next:
+
+//  - require Express so we can use it in our app.
+const express = require("express");
+const logger = require("morgan");
+
+
+
+//0.1 -  Create an express server instance named `app`
+// `app` is the Express server that will be handling requests and responses
+const app = express();
+
+
+
+// 1 - Setup the request logger to run on each request
+app.use(logger("dev"));
+
+
+
+// 2 - Make the static files inside of the `public/` folder publicly accessible
+app.use(express.static('public'));
+
+// 3 - JSON middleware to parse incoming HTTP requests that contain JSON
+app.use(express.json());
+
+//JSON IS A FORMAT TO EXPORTING DATA
+
+// QUERY IS A REQUEST
+// MONGOOSE: To enforce data consistance
+//Method.find: will give you an array with all the documents (objects) or an empty array
+
+
+************************************************************************************************
+
+// GET /cooks?locationString=berlin
+app.get("/cooks", (req, res, next) => {
+    // const location = req.query.location;
+    const {locationString} = req.query;
+
+
+    Cook.find({location: locationString})
+        .then( cooks => {
+            res.json(cooks)
+        })
+        .catch()
+    
+})
+
+// GET /cooks/52
+// GET /cooks/90
+
+app.get("/cooks/:cookId", (req, res, next) => {
+    
+    //const cookId = req.params.cookId;
+    const {cookId} = req.params;
+})
+
+
+// POST /cooks
+app.post("/cooks", (req, res, next) => {
+    console.log(req.body)
+})
+
+//*****************************************************************
+// // GET /
+// app.get("/", (req, res, next) => {
+//     // res.send()
+//     // res.json()
+//     res.sendFile(__dirname + '/views/home-page.html');
+// })
+
+
+// // GET /contact
+// app.get("/contact", (req, res, next) => {
+//     res.sendFile(__dirname + '/views/contact-page.html');
+// });
+//*****************************************************************
